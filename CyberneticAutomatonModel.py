@@ -38,6 +38,15 @@ def Transition():
 		self.confidenceLevel = confidence      #the learned confidence for this transition
 		self.permanent = permanent
 
+	def isPermanent(self):
+		return self.permanent
+
+	def markPermanent(self):
+		self.permanent = True
+
+	def nextNode(self):
+		return self.nextNode
+
 def InputSymbol():
 
 	def __init__(self, input=None, strength=0):
