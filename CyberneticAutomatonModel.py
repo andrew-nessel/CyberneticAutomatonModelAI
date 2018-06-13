@@ -20,7 +20,7 @@ def Node():
 				return True
 		return False
 
-	def getTrans(self, input):
+	def getTrans(self, input): #TODO is this an okay transition function? feels like it needs probability...
 		for transition in self.trans:
 			if transition.inputSymbol == input:
 				return transition
@@ -80,33 +80,48 @@ def CyberneticAutomatonModel():
 		self.anchor = startNode
 		self.inputL = None
 
+		self.c = self.startNode
+		self.ql = self.startNode
+		self.al = None
+		self.o = None
+		self.ol = None
 
-	def inputStimulus(inputSymbols): #TODO Not finished
-		c = self.startNode
-		ql = self.startNode
-		al = None
-		o = None
-		ol = None
 
+	def inputStimulus(self, inputSymbols): #TODO Not finished
+		
 		timeNow = datetime.datetime.now().timestamp()
 		timeDiff = timeNow - self.intervalTime
 		while timeDiff > timingDifferencialTau:
-			if c.includesTrans(None):
-				tran = c.getTrans(None)
+			if self.c.includesTrans(None):
+				tran = self.c.getTrans(None)
 				if tran.isPermanent():
 					tran.markPermanent()
-				ql = c
-				c = tran.nextNode()
-			self.anchor = c
-			a1 = None
-			ol = None
+				self.ql = self.c
+				self.c = tran.nextNode()
+			self.anchor = self.c
+			self.a1 = None
+			self.ol = None
 			#NOT FINISHED -> Unmark all symbols b and distributions P∆q,a
-			timeDiff -- timingDifferencialTau
+			timeDiff -= timingDifferencialTau
 
 		self.intervalTime = timeNow
 
-		#Currently on 4
+		#4
 
+		createNewTransition() #5 update with parameters and return values
+
+		#6,7,8,9
+
+		updateExpectations() #10 update with parameters and return values
+
+		if(self.c.isReward):
+			applyReward() #update with parameters and return values
+		else if(self.c.isPunishment):
+			applyPunishment() #update with parameters and return values
+		else:
+			applyConditioning() #update with parameters and return values
+
+		#12 is a loop? a loop in the function, or should be called a number of times? if called careful of scope of variables
 
 		self.inputL = inputSymbols
 		return None  #Finished 1, 2~, 3, NOT FINISHED 4+
